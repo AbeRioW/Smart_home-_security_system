@@ -1,6 +1,6 @@
 smart_home _security_system\oled.o: ..\App\oled.c
 smart_home _security_system\oled.o: ..\App\oled.h
-smart_home _security_system\oled.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+smart_home _security_system\oled.o: D:\Program Files\KEIL5\ARM\ARMCC\Bin\..\include\stdint.h
 smart_home _security_system\oled.o: ../Core/Inc/gpio.h
 smart_home _security_system\oled.o: ../Core/Inc/main.h
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
@@ -16,7 +16,7 @@ smart_home _security_system\oled.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 smart_home _security_system\oled.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-smart_home _security_system\oled.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+smart_home _security_system\oled.o: D:\Program Files\KEIL5\ARM\ARMCC\Bin\..\include\stddef.h
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h

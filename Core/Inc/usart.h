@@ -39,16 +39,9 @@ extern UART_HandleTypeDef huart1;
 #define UART_DATA_LENGTH 9
 /* USER CODE END Private defines */
 
-typedef struct {
-    uint8_t rx_buffer[UART_RX_BUF_SIZE];
-    uint8_t rx_index;
-    uint8_t data_ready;
-    uint16_t tvoc_value;
-    uint16_t ch2o_value;
-    uint16_t co2_value;
-} UART_Data_TypeDef;
-
+/* USER CODE BEGIN Variables */
 extern UART_Data_TypeDef uart_data;
+/* USER CODE END Variables */
 
 void MX_USART1_UART_Init(void);
 

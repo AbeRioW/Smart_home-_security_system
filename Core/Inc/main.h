@@ -36,6 +36,37 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+// 设置状态枚举
+typedef enum {
+    SETTING_NONE,
+    SETTING_MODE
+} SettingState;
+
+// 当前编辑的阈值类型
+typedef enum {
+    EDIT_TEMPERATURE,
+    EDIT_HUMIDITY,
+    EDIT_CO2,
+    EDIT_MQ5
+} EditType;
+
+// 阈值结构体
+typedef struct {
+    uint8_t temperature; // 温度阈值，范围10-40
+    uint8_t humidity;    // 湿度阈值，范围10-40
+    uint8_t co2;         // CO2阈值，范围1-10
+    uint16_t mq5;        // MQ5阈值，范围2000-4000
+} Thresholds;
+
+// UART数据结构体
+typedef struct {
+    uint8_t rx_buffer[32];
+    uint8_t rx_index;
+    uint8_t data_ready;
+    uint16_t tvoc_value;
+    uint16_t ch2o_value;
+    uint16_t co2_value;
+} UART_Data_TypeDef;
 
 /* USER CODE END ET */
 
@@ -61,6 +92,15 @@ void Error_Handler(void);
 #define OLED_SCL_GPIO_Port GPIOC
 #define OLED_SDA_Pin GPIO_PIN_14
 #define OLED_SDA_GPIO_Port GPIOC
+#define KEY1_Pin GPIO_PIN_12
+#define KEY1_GPIO_Port GPIOB
+#define KEY1_EXTI_IRQn EXTI15_10_IRQn
+#define KEY2_Pin GPIO_PIN_13
+#define KEY2_GPIO_Port GPIOB
+#define KEY2_EXTI_IRQn EXTI15_10_IRQn
+#define KEY3_Pin GPIO_PIN_14
+#define KEY3_GPIO_Port GPIOB
+#define KEY3_EXTI_IRQn EXTI15_10_IRQn
 #define DHT11_Pin GPIO_PIN_5
 #define DHT11_GPIO_Port GPIOB
 

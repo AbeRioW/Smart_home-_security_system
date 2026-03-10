@@ -5,6 +5,8 @@
 #include "gpio.h"
 #include "dht11.h"
 
+extern uint8_t OLED_GRAM[144][8];
+
 #define OLED_SCL_Clr()  HAL_GPIO_WritePin(OLED_SCL_GPIO_Port, OLED_SCL_Pin, GPIO_PIN_RESET);
 #define OLED_SCL_Set()  HAL_GPIO_WritePin(OLED_SCL_GPIO_Port, OLED_SCL_Pin, GPIO_PIN_SET);
 
