@@ -30,3 +30,6 @@ smart_home _security_system\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/
 smart_home _security_system\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smart_home _security_system\stm32f1xx_it.o: ../Core/Inc/stm32f1xx_it.h
 smart_home _security_system\stm32f1xx_it.o: ../Core/Inc/usart.h
+smart_home _security_system\stm32f1xx_it.o: ../App/esp8266.h
+smart_home _security_system\stm32f1xx_it.o: D:\Program Files\KEIL5\ARM\ARMCC\Bin\..\include\stdbool.h
+smart_home _security_system\stm32f1xx_it.o: D:\Program Files\KEIL5\ARM\ARMCC\Bin\..\include\string.h
