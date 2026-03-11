@@ -33,6 +33,7 @@ smart_home _security_system\main.o: ../Core/Inc/adc.h
 smart_home _security_system\main.o: ../Core/Inc/dma.h
 smart_home _security_system\main.o: ../Core/Inc/usart.h
 smart_home _security_system\main.o: ../Core/Inc/gpio.h
+smart_home _security_system\main.o: ../App/ui.h
 smart_home _security_system\main.o: ../App/dht11.h
 smart_home _security_system\main.o: ../App/oled.h
 smart_home _security_system\main.o: D:\Program Files\KEIL5\ARM\ARMCC\Bin\..\include\stdio.h

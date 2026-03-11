@@ -36,22 +36,6 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-// 设置状态枚举
-typedef enum {
-    SETTING_NONE,
-    SETTING_MODE
-} SettingState;
-
-// 当前编辑的阈值类型
-typedef enum {
-    EDIT_TEMPERATURE,
-    EDIT_HUMIDITY,
-    EDIT_CO2,
-    EDIT_MQ5
-} EditType;
-
-
-
 // UART数据结构体
 typedef struct {
     uint8_t rx_buffer[32];

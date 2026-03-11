@@ -836,19 +836,14 @@
               <FilePath>..\App\dht11.c</FilePath>
             </File>
             <File>
-              <FileName>dht11.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\App\dht11.h</FilePath>
-            </File>
-            <File>
               <FileName>flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\flash.c</FilePath>
             </File>
             <File>
-              <FileName>flash.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\App\flash.h</FilePath>
+              <FileName>ui.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\ui.c</FilePath>
             </File>
           </Files>
         </Group>

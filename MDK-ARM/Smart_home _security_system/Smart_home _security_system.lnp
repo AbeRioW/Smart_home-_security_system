@@ -25,6 +25,7 @@
 "smart_home _security_system\oled.o"
 "smart_home _security_system\dht11.o"
 "smart_home _security_system\flash.o"
+"smart_home _security_system\ui.o"
 --strict --scatter "Smart_home _security_system\Smart_home _security_system.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
