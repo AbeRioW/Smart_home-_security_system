@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "flash.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -50,13 +50,7 @@ typedef enum {
     EDIT_MQ5
 } EditType;
 
-// 阈值结构体
-typedef struct {
-    uint8_t temperature; // 温度阈值，范围10-40
-    uint8_t humidity;    // 湿度阈值，范围10-40
-    uint8_t co2;         // CO2阈值，范围1-10
-    uint16_t mq5;        // MQ5阈值，范围2000-4000
-} Thresholds;
+
 
 // UART数据结构体
 typedef struct {

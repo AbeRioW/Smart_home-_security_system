@@ -30,5 +30,6 @@ smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1x
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+smart_home _security_system\oled.o: ../App/flash.h
 smart_home _security_system\oled.o: ..\App\dht11.h
 smart_home _security_system\oled.o: ..\App\oledfont.h

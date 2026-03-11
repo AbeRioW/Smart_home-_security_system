@@ -28,6 +28,7 @@ smart_home _security_system\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1x
 smart_home _security_system\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
 smart_home _security_system\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 smart_home _security_system\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+smart_home _security_system\main.o: ../App/flash.h
 smart_home _security_system\main.o: ../Core/Inc/adc.h
 smart_home _security_system\main.o: ../Core/Inc/dma.h
 smart_home _security_system\main.o: ../Core/Inc/usart.h

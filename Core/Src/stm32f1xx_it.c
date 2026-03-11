@@ -23,7 +23,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "usart.h"
-#include "esp8266.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -292,14 +291,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         {
             HAL_UART_Receive_IT(&huart1, &uart_data.rx_buffer[uart_data.rx_index], 1);
         }
-    }
-		
-		if (huart == ESP8266_UART)
-    {
-        // DMA 传输完整（缓冲已满），标记为满并重启接收
-        esp8266_cnt = (ESP8266_BUF_SIZE - 1);
-        esp8266_buf[esp8266_cnt] = '\0';
-        HAL_UART_Receive_DMA(ESP8266_UART, (uint8_t*)esp8266_buf, ESP8266_BUF_SIZE - 1);
     }
 }
 /* USER CODE END 1 */

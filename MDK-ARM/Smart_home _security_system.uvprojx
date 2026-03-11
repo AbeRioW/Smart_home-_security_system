@@ -841,24 +841,14 @@
               <FilePath>..\App\dht11.h</FilePath>
             </File>
             <File>
-              <FileName>cJSON.c</FileName>
+              <FileName>flash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\App\cJSON.c</FilePath>
+              <FilePath>..\App\flash.c</FilePath>
             </File>
             <File>
-              <FileName>delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\App\delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>esp8266.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\App\esp8266.c</FilePath>
-            </File>
-            <File>
-              <FileName>mqtt_publisher.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\App\mqtt_publisher.c</FilePath>
+              <FileName>flash.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\App\flash.h</FilePath>
             </File>
           </Files>
         </Group>
