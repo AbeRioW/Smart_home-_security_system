@@ -482,6 +482,13 @@ void OLED_Init(void)
 
 void OLED_ShowTempHumidity(DHT11_Data_t *data)
 {
+	// 先清空第一行
+	uint8_t i;
+	for (i = 0; i < 128; i++)
+	{
+		OLED_GRAM[i][0] = 0;
+	}
+	
 	OLED_ShowString(0, 0, (uint8_t *)"T:", 8, 1);
 	
 	if (data->temp_int >= 100)

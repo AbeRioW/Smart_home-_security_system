@@ -16,6 +16,12 @@ uint8_t key1_pressed = 0;
 uint8_t key2_pressed = 0;
 uint8_t key3_pressed = 0;
 
+// 按键防抖变量
+static uint32_t key1_last_time = 0;
+static uint32_t key2_last_time = 0;
+static uint32_t key3_last_time = 0;
+#define KEY_DEBOUNCE_TIME 200 // 200ms防抖时间
+
 // 显示更新标志位
 uint8_t update_display = 0;
 
@@ -412,12 +418,24 @@ void Update_Setting_Display(void)
  */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-    // 只设置标志位，不执行具体操作
+    static uint32_t current_time = 0;
+    current_time = HAL_GetTick();
+    
+    // 按键防抖处理
     if (GPIO_Pin == KEY1_Pin) {
-        key1_pressed = 1;
+        if (current_time - key1_last_time > KEY_DEBOUNCE_TIME) {
+            key1_pressed = 1;
+            key1_last_time = current_time;
+        }
     } else if (GPIO_Pin == KEY2_Pin) {
-        key2_pressed = 1;
+        if (current_time - key2_last_time > KEY_DEBOUNCE_TIME) {
+            key2_pressed = 1;
+            key2_last_time = current_time;
+        }
     } else if (GPIO_Pin == KEY3_Pin) {
-        key3_pressed = 1;
+        if (current_time - key3_last_time > KEY_DEBOUNCE_TIME) {
+            key3_pressed = 1;
+            key3_last_time = current_time;
+        }
     }
 }
