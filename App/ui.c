@@ -4,7 +4,7 @@
 Thresholds thresholds = {
     .temperature = 30, // 默认温度阈值30
     .humidity = 20,    // 默认湿度阈值20
-    .co2 = 2,          // 默认CO2阈值2
+    .co2 = 2.0f,       // 默认CO2阈值2.0 mg/m3
     .mq5 = 3000        // 默认MQ5阈值3000
 };
 
@@ -25,6 +25,13 @@ uint8_t result;
 uint32_t dht11_timer = 0;
 uint32_t uart_error_count = 0;
 
+// 语音播报冷却时间计时器（2分钟 = 12000个10ms周期）
+#define VOICE_COOLDOWN_TIME 12000
+static uint32_t mq5_voice_timer = VOICE_COOLDOWN_TIME;
+static uint32_t temp_voice_timer = VOICE_COOLDOWN_TIME;
+static uint32_t humidity_voice_timer = VOICE_COOLDOWN_TIME;
+static uint32_t co2_voice_timer = VOICE_COOLDOWN_TIME;
+
 /**
  * @brief 初始化UI
  * @param 无
@@ -33,7 +40,7 @@ uint32_t uart_error_count = 0;
 void UI_Init(void)
 {
     OLED_Init();
-   // FLASH_Read_Thresholds(&thresholds);
+    FLASH_Read_Thresholds(&thresholds);
     
     //result = DHT11_READ_DATA(&dht11_data);
     if (result == 0)
@@ -119,19 +126,19 @@ void UI_Handle_Key_Events(void)
                     break;
                 case EDIT_HUMIDITY:
                     thresholds.humidity++;
-                    if (thresholds.humidity > 40) {
+                    if (thresholds.humidity > 90) {
                         thresholds.humidity = 10;
                     }
                     break;
                 case EDIT_CO2:
-                    thresholds.co2++;
-                    if (thresholds.co2 > 10) {
-                        thresholds.co2 = 1;
+                    thresholds.co2 += 0.1f;
+                    if (thresholds.co2 > 10.0f) {
+                        thresholds.co2 = 0.1f;
                     }
                     break;
                 case EDIT_MQ5:
                     thresholds.mq5 += 100;
-                    if (thresholds.mq5 > 4000) {
+                    if (thresholds.mq5 > 5000) {
                         thresholds.mq5 = 2000;
                     }
                     break;
@@ -154,19 +161,19 @@ void UI_Handle_Key_Events(void)
                 case EDIT_HUMIDITY:
                     thresholds.humidity--;
                     if (thresholds.humidity < 10) {
-                        thresholds.humidity = 40;
+                        thresholds.humidity = 90;
                     }
                     break;
                 case EDIT_CO2:
-                    thresholds.co2--;
-                    if (thresholds.co2 < 1) {
-                        thresholds.co2 = 10;
+                    thresholds.co2 -= 0.1f;
+                    if (thresholds.co2 < 0.1f) {
+                        thresholds.co2 = 10.0f;
                     }
                     break;
                 case EDIT_MQ5:
                     thresholds.mq5 -= 100;
                     if (thresholds.mq5 < 2000) {
-                        thresholds.mq5 = 4000;
+                        thresholds.mq5 = 5000;
                     }
                     break;
             }
@@ -217,6 +224,15 @@ void UI_Update_Main_Display(void)
             float co2 = UART_Get_CO2();
             
             OLED_ShowGasConcentration(0, 0, co2);
+            
+            // CO2阈值检测
+            if (co2 > thresholds.co2 + 0.001f && co2_voice_timer >= VOICE_COOLDOWN_TIME)
+            {
+                // 发送CO2超限数据
+                uint8_t co2_data[] = {0xFD, 0x00, 0x0E, 0x01, 0x01, 0xB6, 0xFE, 0xD1, 0xF5, 0xBB, 0xAF, 0xCC, 0xBC, 0xB3, 0xAC, 0xB1, 0xEA};
+                HAL_UART_Transmit(&huart3, co2_data, sizeof(co2_data), 1000);
+                co2_voice_timer = 0;  // 重置冷却计时器
+            }
         }
         else
         {
@@ -227,6 +243,63 @@ void UI_Update_Main_Display(void)
     // 读取并显示MQ5数值
     uint16_t mq5_value = MQ5_Read_Value();
     OLED_ShowMQ5Value(mq5_value);
+    
+    // 阈值检测与处理
+    static uint32_t beep_timer = 0;
+    static uint8_t beep_active = 0;
+    
+    // 处理beep计时器
+    if (beep_active)
+    {
+        beep_timer++;
+        if (beep_timer >= 500)  // 5秒
+        {
+            beep_timer = 0;
+            beep_active = 0;
+            HAL_GPIO_WritePin(BEEP_GPIO_Port, BEEP_Pin, GPIO_PIN_SET);  // 关闭beep
+        }
+    }
+    
+    // 更新语音播报冷却计时器
+    if (mq5_voice_timer < VOICE_COOLDOWN_TIME) mq5_voice_timer++;
+    if (temp_voice_timer < VOICE_COOLDOWN_TIME) temp_voice_timer++;
+    if (humidity_voice_timer < VOICE_COOLDOWN_TIME) humidity_voice_timer++;
+    if (co2_voice_timer < VOICE_COOLDOWN_TIME) co2_voice_timer++;
+    
+    // MQ5阈值检测
+    if (mq5_value > thresholds.mq5 && mq5_voice_timer >= VOICE_COOLDOWN_TIME)
+    {
+        // 发送MQ5超限数据
+        uint8_t mq5_data[] = {0xFD, 0x00, 0x0A, 0x01, 0x01, 0xC8, 0xBC, 0xC6, 0xF8, 0xB3, 0xAC, 0xB1, 0xEA};
+        HAL_UART_Transmit(&huart3, mq5_data, sizeof(mq5_data), 1000);
+        mq5_voice_timer = 0;  // 重置冷却计时器
+        
+        // 激活beep
+        if (!beep_active)
+        {
+            beep_active = 1;
+            beep_timer = 0;
+            HAL_GPIO_WritePin(BEEP_GPIO_Port, BEEP_Pin, GPIO_PIN_RESET);  // 打开beep
+        }
+    }
+    
+    // 温度阈值检测
+    if (result == 0 && dht11_data.temp_int > thresholds.temperature && temp_voice_timer >= VOICE_COOLDOWN_TIME)
+    {
+        // 发送温度超限数据
+        uint8_t temp_data[] = {0xFD, 0x00, 0x0A, 0x01, 0x01, 0xCE, 0xC2, 0xB6, 0xC8, 0xB9, 0xFD, 0xB8, 0xDF};
+        HAL_UART_Transmit(&huart3, temp_data, sizeof(temp_data), 1000);
+        temp_voice_timer = 0;  // 重置冷却计时器
+    }
+    
+    // 湿度阈值检测
+    if (result == 0 && dht11_data.humidity_int > thresholds.humidity && humidity_voice_timer >= VOICE_COOLDOWN_TIME)
+    {
+        // 发送湿度超限数据
+        uint8_t humidity_data[] = {0xFD, 0x00, 0x0A, 0x01, 0x01, 0xCA, 0xAA, 0xB6, 0xC8, 0xB9, 0xFD, 0xB4, 0xF3};
+        HAL_UART_Transmit(&huart3, humidity_data, sizeof(humidity_data), 1000);
+        humidity_voice_timer = 0;  // 重置冷却计时器
+    }
 }
 
 /**
@@ -304,10 +377,10 @@ void Update_Setting_Display(void)
             if (current_edit == EDIT_CO2) {
                 // 高亮显示当前编辑的阈值
                 OLED_ShowString(0, 20, (uint8_t*)"CO2: ", 8, 1);
-                sprintf(buffer, "%d ppm", thresholds.co2);
+                sprintf(buffer, "%.1f mg/m3", thresholds.co2);
                 OLED_ShowString(48, 20, (uint8_t*)buffer, 8, 0); // 反显
             } else {
-                sprintf(buffer, "CO2: %d ppm", thresholds.co2);
+                sprintf(buffer, "CO2: %.1f mg/m3", thresholds.co2);
                 OLED_ShowString(0, 20, (uint8_t*)buffer, 8, 1);
             }
             

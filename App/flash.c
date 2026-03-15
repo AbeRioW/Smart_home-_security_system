@@ -46,9 +46,10 @@ void FLASH_Write_Thresholds(Thresholds *th)
     uint32_t PageError = 0;
     HAL_FLASHEx_Erase(&EraseInitStruct, &PageError);
     
-    // 写入阈值数据
+    // 写入阈值数据 - 使用uint32_t指针按字写入
     uint32_t *data_ptr = (uint32_t*)th;
-    for (int i = 0; i < sizeof(Thresholds)/4; i++) {
+    int words = (sizeof(Thresholds) + 3) / 4; // 向上取整到4字节
+    for (int i = 0; i < words; i++) {
         HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, FLASH_USER_START_ADDR + i*4, data_ptr[i]);
     }
     
@@ -63,19 +64,20 @@ void FLASH_Write_Thresholds(Thresholds *th)
 void FLASH_Read_Thresholds(Thresholds *th)
 {
     uint32_t *data_ptr = (uint32_t*)th;
-    for (int i = 0; i < sizeof(Thresholds)/4; i++) {
+    int words = (sizeof(Thresholds) + 3) / 4; // 向上取整到4字节
+    for (int i = 0; i < words; i++) {
         data_ptr[i] = *(__IO uint32_t*)(FLASH_USER_START_ADDR + i*4);
     }
     
     // 检查数据有效性，如果无效则使用默认值
     if (th->temperature < 10 || th->temperature > 40 ||
-        th->humidity < 10 || th->humidity > 40 ||
-        th->co2 < 1 || th->co2 > 10 ||
-        th->mq5 < 2000 || th->mq5 > 4000) {
+        th->humidity < 10 || th->humidity > 90 ||
+        th->co2 < 0.1f || th->co2 > 10.0f ||
+        th->mq5 < 2000 || th->mq5 > 5000) {
         // 数据无效，使用默认值
         th->temperature = 30;
         th->humidity = 20;
-        th->co2 = 2;
+        th->co2 = 2.0f;
         th->mq5 = 3000;
     }
 }

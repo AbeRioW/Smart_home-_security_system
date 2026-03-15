@@ -34,6 +34,8 @@ extern "C" {
 
 extern UART_HandleTypeDef huart1;
 
+extern UART_HandleTypeDef huart3;
+
 /* USER CODE BEGIN Private defines */
 #define UART_RX_BUF_SIZE 20
 #define UART_DATA_LENGTH 9
@@ -52,6 +54,7 @@ extern UART_Data_TypeDef uart_data;
 /* USER CODE END Private defines */
 
 void MX_USART1_UART_Init(void);
+void MX_USART3_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 void UART_Start_Receive(void);

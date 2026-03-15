@@ -70,6 +70,8 @@ void Error_Handler(void);
 #define KEY3_Pin GPIO_PIN_14
 #define KEY3_GPIO_Port GPIOB
 #define KEY3_EXTI_IRQn EXTI15_10_IRQn
+#define BEEP_Pin GPIO_PIN_15
+#define BEEP_GPIO_Port GPIOB
 #define DHT11_Pin GPIO_PIN_5
 #define DHT11_GPIO_Port GPIOB
 

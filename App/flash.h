@@ -23,9 +23,9 @@ extern "C" {
 // 阈值结构体
 typedef struct {
     uint8_t temperature; // 温度阈值，范围10-40
-    uint8_t humidity;    // 湿度阈值，范围10-40
-    uint8_t co2;         // CO2阈值，范围1-10
-    uint16_t mq5;        // MQ5阈值，范围2000-4000
+    uint8_t humidity;    // 湿度阈值，范围10-90
+    float co2;           // CO2阈值，单位mg/m3，范围0.1-10.0
+    uint16_t mq5;        // MQ5阈值，范围2000-5000
 } Thresholds;
 
 /* USER CODE END ET */

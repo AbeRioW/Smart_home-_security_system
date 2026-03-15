@@ -96,9 +96,15 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   MX_ADC1_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   UART_Start_Receive();
   UI_Init();
+  
+  // 上电语音播报测试
+  uint8_t power_on_data[] = {0xFD, 0x00, 0x0A, 0x01, 0x01, 0xC9, 0xCF, 0xB5, 0xE7, 0xD5, 0xFD, 0xB3, 0xA3}; // "上电正常"
+  HAL_UART_Transmit(&huart3, power_on_data, sizeof(power_on_data), 1000);
+  HAL_Delay(2000); // 等待语音播报完成
   /* USER CODE END 2 */
 
   /* Infinite loop */
