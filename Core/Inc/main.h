@@ -36,15 +36,6 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-// UART数据结构体
-typedef struct {
-    uint8_t rx_buffer[32];
-    uint8_t rx_index;
-    uint8_t data_ready;
-    uint16_t tvoc_value;
-    uint16_t ch2o_value;
-    uint16_t co2_value;
-} UART_Data_TypeDef;
 
 /* USER CODE END ET */
 

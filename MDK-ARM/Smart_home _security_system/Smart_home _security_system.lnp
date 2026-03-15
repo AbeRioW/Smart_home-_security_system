@@ -3,7 +3,6 @@
 "smart_home _security_system\main.o"
 "smart_home _security_system\gpio.o"
 "smart_home _security_system\adc.o"
-"smart_home _security_system\dma.o"
 "smart_home _security_system\usart.o"
 "smart_home _security_system\stm32f1xx_it.o"
 "smart_home _security_system\stm32f1xx_hal_msp.o"

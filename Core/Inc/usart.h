@@ -34,15 +34,24 @@ extern "C" {
 
 extern UART_HandleTypeDef huart1;
 
-extern UART_HandleTypeDef huart2;
-
 /* USER CODE BEGIN Private defines */
 #define UART_RX_BUF_SIZE 20
 #define UART_DATA_LENGTH 9
+
+// UART数据结构体
+typedef struct {
+    uint8_t rx_buffer[UART_RX_BUF_SIZE];
+    uint8_t rx_index;
+    uint8_t data_ready;
+    uint16_t tvoc_value;
+    uint16_t ch2o_value;
+    uint16_t co2_value;
+} UART_Data_TypeDef;
+
+extern UART_Data_TypeDef uart_data;
 /* USER CODE END Private defines */
 
 void MX_USART1_UART_Init(void);
-void MX_USART2_UART_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 void UART_Start_Receive(void);
@@ -52,10 +61,6 @@ float UART_Get_CH2O(void);
 float UART_Get_CO2(void);
 void UART_Show_Received_Data(void);
 /* USER CODE END Prototypes */
-
-/* USER CODE BEGIN Private variables */
-extern UART_Data_TypeDef uart_data;
-/* USER CODE END Private variables */
 
 #ifdef __cplusplus
 }

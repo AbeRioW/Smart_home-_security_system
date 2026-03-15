@@ -1,111 +1,165 @@
 #include "dht11.h"
 
-static void DHT11_Delay_us(uint32_t us)
+/**
+  * @brief  ��ʪ�ȴ����������źŷ���
+  * @param  void
+  * @retval None
+  */
+void DHT11_START(void)
 {
-    uint32_t ticks = us * (SystemCoreClock / 1000000);
-    uint32_t start = SysTick->VAL;
-    while ((start - SysTick->VAL) < ticks);
-}
+    DHT11_GPIO_MODE_SET(0);                         //  ��������Ϊ���ģʽ
+    
+    DHT11_PIN_RESET;                                //  �������͵�ƽ
+    
+    HAL_Delay(20);                                  //  �����ȴ� 18 < ms > 30
+    
+    DHT11_GPIO_MODE_SET(1);                         //  ��������Ϊ����ģʽ���ȴ�DHT11��Ӧ
+}                                                   //  ��Ϊ�������������룬GPIO -> 1
+ 
+/**
+  * @brief  ��ȡһλ���� 1bit
+  * @param  void
+  * @retval 0/1
+  */
+unsigned char DHT11_READ_BIT(void)
+{
+    while(!DHT11_READ_IO);                          //  �������ݵĵ͵�ƽ 
+    
+    Coarse_delay_us(40);
 
-void DHT11_GPIO_Output(void)
-{
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-    GPIO_InitStruct.Pin = DHT11_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(DHT11_GPIO_Port, &GPIO_InitStruct);
+    if(DHT11_READ_IO)                               //  ��ʱ�����Ϊ�ߵ�ƽ������Ϊ 1
+    {
+        while(DHT11_READ_IO);                       //  �������ݵĸߵ�ƽ
+        return 1;
+    }   
+    else                                            //  ����ʱΪ����Ϊ 0
+    {
+        return 0;
+    }
 }
-
-void DHT11_GPIO_Input(void)
+ 
+/**
+  * @brief  ��ȡһ���ֽ����� 1byte / 8bit
+  * @param  void
+  * @retval temp
+  */
+unsigned char DHT11_READ_BYTE(void)
 {
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-    GPIO_InitStruct.Pin = DHT11_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    HAL_GPIO_Init(DHT11_GPIO_Port, &GPIO_InitStruct);
-}
-
-uint8_t DHT11_Read_Data(DHT11_Data_TypeDef *data)
-{
-    uint8_t i, j;
-    uint8_t temp = 0;
-    uint8_t buffer[5] = {0};
-    uint32_t timeout;
+    uint8_t i,temp = 0;                             //  ��ʱ�洢����
     
-    // 发送开始信号
-    DHT11_GPIO_Output();
-    HAL_GPIO_WritePin(DHT11_GPIO_Port, DHT11_Pin, GPIO_PIN_RESET);
-    HAL_Delay(20);  // 拉低至少18ms
-    HAL_GPIO_WritePin(DHT11_GPIO_Port, DHT11_Pin, GPIO_PIN_SET);
-    DHT11_Delay_us(30);  // 拉高30us
-    
-    // 切换到输入模式
-    DHT11_GPIO_Input();
-    
-    // 等待DHT11响应
-    timeout = 10000;
-    while (HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin) == GPIO_PIN_SET)
+    for(i=0; i<8 ;i++)
     {
-        if (--timeout == 0) return 1;  // 未收到响应
-    }
-    
-    // 等待响应低电平结束
-    timeout = 10000;
-    while (HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin) == GPIO_PIN_RESET)
-    {
-        if (--timeout == 0) return 2;  // 响应低电平超时
-    }
-    
-    // 等待响应高电平结束
-    timeout = 10000;
-    while (HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin) == GPIO_PIN_SET)
-    {
-        if (--timeout == 0) return 3;  // 响应高电平超时
-    }
-    
-    // 读取40位数据
-    for (i = 0; i < 5; i++)
-    {
-        for (j = 0; j < 8; j++)
+        temp <<= 1;                                 
+        if(DHT11_READ_BIT())                        //  1byte -> 8bit
         {
-            // 等待数据位开始
-            timeout = 10000;
-            while (HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin) == GPIO_PIN_RESET)
-            {
-                if (--timeout == 0) return 4;  // 数据位开始超时
-            }
-            
-            // 测量高电平持续时间
-            uint32_t high_time = 0;
-            while (HAL_GPIO_ReadPin(DHT11_GPIO_Port, DHT11_Pin) == GPIO_PIN_SET)
-            {
-                high_time++;
-                if (high_time > 1000) break;  // 防止无限循环
-            }
-            
-            // 根据高电平持续时间判断数据位
-            if (high_time > 30)  // 高电平持续时间大于30us为1位
-            {
-                temp |= (uint8_t)(0x01 << (7 - j));
-            }
+            temp |= 1;                              //  0000 0001
         }
-        buffer[i] = temp;
-        temp = 0;
     }
-    
-    // 校验数据
-    if ((buffer[0] + buffer[1] + buffer[2] + buffer[3]) != buffer[4])
-    {
-        return 6;  // 校验错误
-    }
-    
-    // 填充数据
-    data->humidity_int = buffer[0];
-    data->humidity_dec = buffer[1];
-    data->temperature_int = buffer[2];
-    data->temperature_dec = buffer[3];
-    data->check_sum = buffer[4];
-    
-    return 0;
+    return temp;
 }
+ 
+/**
+  * @brief  ��ȡ��ʪ�ȴ��������� 5byte / 40bit
+  * @param  void
+  * @retval 0/1
+  */
+unsigned char DHT11_READ_DATA(DHT11_Data_t *dht_data)
+{
+    uint8_t i;
+    uint8_t data[5] = {0};
+    
+    DHT11_START();                                  //  �������������ź�
+    
+    if(DHT11_Check())                               //  ���DHT11Ӧ��     
+    {  
+        while(!DHT11_READ_IO);                      //  ����DHT11���źŵĵ͵�ƽ
+        while(DHT11_READ_IO);                       //  ����DHT11���źŵĸߵ�ƽ
+        
+        for(i=0; i<5; i++)
+        {                        
+            data[i] = DHT11_READ_BYTE();            //  ��ȡ 5byte
+        }
+        
+        if(data[0] + data[1] + data[2] + data[3] == data[4])   //У���
+        {
+           dht_data->humidity_int = data[0];
+           dht_data->humidity_dec = data[1];
+           dht_data->temp_int = data[2];
+           dht_data->temp_dec = data[3];
+           dht_data->checksum = data[4];
+           return 0;                               
+        }
+        else
+        {
+            return 1;                               //  ����У��ʧ��
+        }
+    }
+    else                                            //  ���DHT11��Ӧ��
+    {
+        return 1;
+    }
+}
+ 
+/**
+  * @brief  �����ʪ�ȴ������Ƿ����(���DHT11��Ӧ���ź�)
+  * @param  void
+  * @retval 0/1
+  */
+unsigned char DHT11_Check(void)
+{
+
+    Coarse_delay_us(40);
+    if(DHT11_READ_IO == 0)                          //  ��⵽DHT11Ӧ��
+    {
+        return 1;
+    }
+    else                                            //  ��⵽DHT11��Ӧ��
+    {
+        return 0;
+    }
+}
+ 
+/**
+  * @brief  ��������ģʽ
+  * @param  mode: 0->out, 1->in
+  * @retval None
+  */
+static void DHT11_GPIO_MODE_SET(uint8_t mode)
+{
+    if(mode)
+    {
+        /*  ����  */
+        GPIO_InitTypeDef GPIO_InitStruct;
+        GPIO_InitStruct.Pin = DHT11_Pin;                   //  DHT11引脚
+        GPIO_InitStruct.Mode = GPIO_MODE_INPUT;             //  ����ģʽ
+        GPIO_InitStruct.Pull = GPIO_PULLUP;                 //  ��������
+        HAL_GPIO_Init(DHT11_GPIO_Port, &GPIO_InitStruct);
+    }
+    else 
+    {
+        /*  ���  */
+        GPIO_InitTypeDef GPIO_InitStructure;
+        GPIO_InitStructure.Pin = DHT11_Pin;                //  DHT11引脚
+        GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;      //  Push Pull �������ģʽ
+        GPIO_InitStructure.Pull = GPIO_PULLUP;              //  �������
+        GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;    //  ����
+        HAL_GPIO_Init(DHT11_GPIO_Port,&GPIO_InitStructure);
+    }
+}
+
+/**
+  * @brief  ������ʱ us , ������ 72M ��Ƶ��ʹ��
+  * @param  us: <= 4294967295
+  * @retval None
+  */
+void Coarse_delay_us(uint32_t us)
+{
+    uint32_t delay = (HAL_RCC_GetHCLKFreq() / 4000000 * us);
+    while (delay--)
+	{
+		;
+	}
+}
+
+
+

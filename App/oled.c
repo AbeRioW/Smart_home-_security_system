@@ -480,25 +480,25 @@ void OLED_Init(void)
 	OLED_WR_Byte(0xAF,OLED_CMD);
 }
 
-void OLED_ShowTempHumidity(DHT11_Data_TypeDef *data)
+void OLED_ShowTempHumidity(DHT11_Data_t *data)
 {
 	OLED_ShowString(0, 0, (uint8_t *)"T:", 8, 1);
 	
-	if (data->temperature_int >= 100)
+	if (data->temp_int >= 100)
 	{
-		OLED_ShowNum(12, 0, data->temperature_int, 3, 8, 1);
+		OLED_ShowNum(12, 0, data->temp_int, 3, 8, 1);
 	}
-	else if (data->temperature_int >= 10)
+	else if (data->temp_int >= 10)
 	{
-		OLED_ShowNum(12, 0, data->temperature_int, 2, 8, 1);
+		OLED_ShowNum(12, 0, data->temp_int, 2, 8, 1);
 	}
 	else
 	{
-		OLED_ShowNum(12, 0, data->temperature_int, 1, 8, 1);
+		OLED_ShowNum(12, 0, data->temp_int, 1, 8, 1);
 	}
 	
 	OLED_ShowChar(24, 0, '.', 8, 1);
-	OLED_ShowNum(30, 0, data->temperature_dec, 1, 8, 1);
+	OLED_ShowNum(30, 0, data->temp_dec, 1, 8, 1);
 	OLED_ShowChar(36, 0, 'C', 8, 1);
 	
 	OLED_ShowString(42, 0, (uint8_t *)"H:", 8, 1);

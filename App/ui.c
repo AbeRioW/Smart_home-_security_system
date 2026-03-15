@@ -20,7 +20,7 @@ uint8_t key3_pressed = 0;
 uint8_t update_display = 0;
 
 // 其他变量
-DHT11_Data_TypeDef dht11_data;
+DHT11_Data_t dht11_data;
 uint8_t result;
 uint32_t dht11_timer = 0;
 uint32_t uart_error_count = 0;
@@ -33,9 +33,9 @@ uint32_t uart_error_count = 0;
 void UI_Init(void)
 {
     OLED_Init();
-    FLASH_Read_Thresholds(&thresholds);
+   // FLASH_Read_Thresholds(&thresholds);
     
-    result = DHT11_Read_Data(&dht11_data);
+    //result = DHT11_READ_DATA(&dht11_data);
     if (result == 0)
     {
         OLED_ShowTempHumidity(&dht11_data);
@@ -43,16 +43,16 @@ void UI_Init(void)
     else
     {
         char error_str[20];
-        sprintf(error_str, "DHT11 Err:%d", result);
+        sprintf(error_str, "DHT11 Err: Read Failed");
         OLED_ShowString(0, 0, (uint8_t*)error_str, 8, 1);
         OLED_Refresh();
     }
     
-    OLED_ShowString(0, 8, (uint8_t*)"CO2: --.-- mg/m3", 8, 1);
-    OLED_Refresh_Line(1);
+   // OLED_ShowString(0, 8, (uint8_t*)"CO2: --.-- mg/m3", 8, 1);
+  //  OLED_Refresh_Line(1);
     
-    OLED_ShowString(0, 16, (uint8_t*)"MQ5: ----/4095", 8, 1);
-    OLED_Refresh_Line(2);
+    //OLED_ShowString(0, 16, (uint8_t*)"MQ5: ----/4095", 8, 1);
+   // OLED_Refresh_Line(2);
 }
 
 /**
@@ -187,14 +187,24 @@ void UI_Update_Main_Display(void)
     if (dht11_timer >= 50)
     {
         dht11_timer = 0;
-        result = DHT11_Read_Data(&dht11_data);
+        result = DHT11_READ_DATA(&dht11_data);
         if (result == 0)
         {
             OLED_ShowTempHumidity(&dht11_data);
         }
         else
         {
-            // 读取失败，保持之前的显示
+            // 读取失败，显示错误信息
+            char error_str[30];
+            sprintf(error_str, "DHT11 Err: Read Failed");
+            // 先清空第一行
+            uint8_t i;
+            for (i = 0; i < 128; i++)
+            {
+                OLED_GRAM[i][0] = 0;
+            }
+            OLED_ShowString(0, 0, (uint8_t*)error_str, 8, 1);
+            OLED_Refresh_Line(0);
         }
     }
     
@@ -229,8 +239,8 @@ void Update_Setting_Display(void)
     if (setting_state == SETTING_NONE) {
         // 返回主界面，重新初始化显示
         OLED_Clear();
-        DHT11_Data_TypeDef dht11_data;
-        uint8_t result = DHT11_Read_Data(&dht11_data);
+        DHT11_Data_t dht11_data;
+        uint8_t result = DHT11_READ_DATA(&dht11_data);
         if (result == 0) {
             OLED_ShowTempHumidity(&dht11_data);
         }

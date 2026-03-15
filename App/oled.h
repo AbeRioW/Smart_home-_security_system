@@ -41,7 +41,7 @@ void OLED_ShowChinese(uint8_t x,uint8_t y,uint8_t num,uint8_t size1,uint8_t mode
 void OLED_ScrollDisplay(uint8_t num,uint8_t space,uint8_t mode);
 void OLED_ShowPicture(uint8_t x,uint8_t y,uint8_t sizex,uint8_t sizey,uint8_t BMP[],uint8_t mode);
 void OLED_Init(void);
-void OLED_ShowTempHumidity(DHT11_Data_TypeDef *data);
+void OLED_ShowTempHumidity(DHT11_Data_t *data);
 void OLED_ShowGasConcentration(float tvoc, float ch2o, float co2);
 void OLED_ShowMQ5Value(uint16_t value);
 void OLED_Refresh_Line(uint8_t page);
