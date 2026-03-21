@@ -31,6 +31,7 @@ smart_home _security_system\ui.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_
 smart_home _security_system\ui.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smart_home _security_system\ui.o: ..\App\dht11.h
 smart_home _security_system\ui.o: ../Core/Inc/main.h
+smart_home _security_system\ui.o: ../App/delay.h
 smart_home _security_system\ui.o: ../Core/Inc/gpio.h
 smart_home _security_system\ui.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 smart_home _security_system\ui.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

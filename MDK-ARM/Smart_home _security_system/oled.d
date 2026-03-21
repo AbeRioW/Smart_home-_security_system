@@ -31,6 +31,7 @@ smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1x
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 smart_home _security_system\oled.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smart_home _security_system\oled.o: ../App/flash.h
+smart_home _security_system\oled.o: ../App/delay.h
 smart_home _security_system\oled.o: ..\App\dht11.h
 smart_home _security_system\oled.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 smart_home _security_system\oled.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h

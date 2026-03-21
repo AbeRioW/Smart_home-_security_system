@@ -3,6 +3,7 @@
 "smart_home _security_system\main.o"
 "smart_home _security_system\gpio.o"
 "smart_home _security_system\adc.o"
+"smart_home _security_system\dma.o"
 "smart_home _security_system\usart.o"
 "smart_home _security_system\stm32f1xx_it.o"
 "smart_home _security_system\stm32f1xx_hal_msp.o"
@@ -25,7 +26,11 @@
 "smart_home _security_system\dht11.o"
 "smart_home _security_system\flash.o"
 "smart_home _security_system\ui.o"
---strict --scatter "Smart_home _security_system\Smart_home _security_system.sct"
+"smart_home _security_system\cjson.o"
+"smart_home _security_system\delay.o"
+"smart_home _security_system\esp8266.o"
+"smart_home _security_system\mqtt_publisher.o"
+--library_type=microlib --strict --scatter "Smart_home _security_system\Smart_home _security_system.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "Smart_home _security_system.map" -o "Smart_home _security_system\Smart_home _security_system.axf"

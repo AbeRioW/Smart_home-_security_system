@@ -32,6 +32,7 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "flash.h"
+#include "delay.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

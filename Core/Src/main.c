@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -26,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "ui.h"
 #include "usart.h"
+#include "esp8266.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -73,7 +75,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  uint8_t wifi_try = 0, mqtt_try = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -94,24 +96,42 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART1_UART_Init();
   MX_ADC1_Init();
   MX_USART3_UART_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  UART_Start_Receive();
-  UI_Init();
+	Delay_Init();
+	#if DEBUG
+	  printf("go\r\n");
+	#endif
+	
   
+  UI_Init();
+  ESP8266_Init();
+//	  while (wifi_try < 5 && !ESP8266_ConnectWiFi())
+//  {
+//      HAL_UART_Transmit(&huart3, (uint8_t*)"WiFi connect retry\r\n", 20, 100);
+//      wifi_try++;
+//      delay_ms(1000);
+//  }
+  //UART_Start_Receive();
   // 上电语音播报测试
+	#if DEBUG
+	
+	#else
   uint8_t power_on_data[] = {0xFD, 0x00, 0x0A, 0x01, 0x01, 0xC9, 0xCF, 0xB5, 0xE7, 0xD5, 0xFD, 0xB3, 0xA3}; // "上电正常"
   HAL_UART_Transmit(&huart3, power_on_data, sizeof(power_on_data), 1000);
   HAL_Delay(2000); // 等待语音播报完成
+	#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-   UI_Update();
+   //UI_Update();
     HAL_Delay(10);
     /* USER CODE END WHILE */
 
@@ -139,7 +159,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -154,12 +174,12 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();

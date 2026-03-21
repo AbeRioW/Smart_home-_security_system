@@ -7,14 +7,14 @@ smart_home _security_system\mqtt_publisher.o: ../Drivers/STM32F1xx_HAL_Driver/In
 smart_home _security_system\mqtt_publisher.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/CMSIS/Include/core_cm3.h
-smart_home _security_system\mqtt_publisher.o: D:\Program Files\KEIL5\ARM\ARMCC\Bin\..\include\stdint.h
+smart_home _security_system\mqtt_publisher.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/CMSIS/Include/cmsis_version.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-smart_home _security_system\mqtt_publisher.o: D:\Program Files\KEIL5\ARM\ARMCC\Bin\..\include\stddef.h
+smart_home _security_system\mqtt_publisher.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h
 smart_home _security_system\mqtt_publisher.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h
@@ -30,11 +30,12 @@ smart_home _security_system\mqtt_publisher.o: ../Drivers/STM32F1xx_HAL_Driver/In
 smart_home _security_system\mqtt_publisher.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smart_home _security_system\mqtt_publisher.o: ..\App\delay.h
 smart_home _security_system\mqtt_publisher.o: ..\App\esp8266.h
-smart_home _security_system\mqtt_publisher.o: D:\Program Files\KEIL5\ARM\ARMCC\Bin\..\include\stdbool.h
-smart_home _security_system\mqtt_publisher.o: D:\Program Files\KEIL5\ARM\ARMCC\Bin\..\include\string.h
+smart_home _security_system\mqtt_publisher.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+smart_home _security_system\mqtt_publisher.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 smart_home _security_system\mqtt_publisher.o: ../Core/Inc/usart.h
 smart_home _security_system\mqtt_publisher.o: ../Core/Inc/main.h
+smart_home _security_system\mqtt_publisher.o: ../App/flash.h
 smart_home _security_system\mqtt_publisher.o: ..\App\oled.h
 smart_home _security_system\mqtt_publisher.o: ../Core/Inc/gpio.h
 smart_home _security_system\mqtt_publisher.o: ..\App\dht11.h
-smart_home _security_system\mqtt_publisher.o: D:\Program Files\KEIL5\ARM\ARMCC\Bin\..\include\stdio.h
+smart_home _security_system\mqtt_publisher.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

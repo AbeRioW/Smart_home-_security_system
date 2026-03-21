@@ -235,9 +235,11 @@ void UI_Update_Main_Display(void)
             if (co2 > thresholds.co2 + 0.001f && co2_voice_timer >= VOICE_COOLDOWN_TIME)
             {
                 // 发送CO2超限数据
+							  #if !DEBUG
                 uint8_t co2_data[] = {0xFD, 0x00, 0x0E, 0x01, 0x01, 0xB6, 0xFE, 0xD1, 0xF5, 0xBB, 0xAF, 0xCC, 0xBC, 0xB3, 0xAC, 0xB1, 0xEA};
                 HAL_UART_Transmit(&huart3, co2_data, sizeof(co2_data), 1000);
                 co2_voice_timer = 0;  // 重置冷却计时器
+							  #endif
             }
         }
         else
@@ -275,9 +277,11 @@ void UI_Update_Main_Display(void)
     // MQ5阈值检测
     if (mq5_value > thresholds.mq5 && mq5_voice_timer >= VOICE_COOLDOWN_TIME)
     {
+			  #if !DEBUG
         // 发送MQ5超限数据
         uint8_t mq5_data[] = {0xFD, 0x00, 0x0A, 0x01, 0x01, 0xC8, 0xBC, 0xC6, 0xF8, 0xB3, 0xAC, 0xB1, 0xEA};
         HAL_UART_Transmit(&huart3, mq5_data, sizeof(mq5_data), 1000);
+			  #endif
         mq5_voice_timer = 0;  // 重置冷却计时器
         
         // 激活beep
@@ -293,8 +297,10 @@ void UI_Update_Main_Display(void)
     if (result == 0 && dht11_data.temp_int > thresholds.temperature && temp_voice_timer >= VOICE_COOLDOWN_TIME)
     {
         // 发送温度超限数据
+			  #if !DEBUG
         uint8_t temp_data[] = {0xFD, 0x00, 0x0A, 0x01, 0x01, 0xCE, 0xC2, 0xB6, 0xC8, 0xB9, 0xFD, 0xB8, 0xDF};
         HAL_UART_Transmit(&huart3, temp_data, sizeof(temp_data), 1000);
+			  #endif
         temp_voice_timer = 0;  // 重置冷却计时器
     }
     
@@ -302,8 +308,10 @@ void UI_Update_Main_Display(void)
     if (result == 0 && dht11_data.humidity_int > thresholds.humidity && humidity_voice_timer >= VOICE_COOLDOWN_TIME)
     {
         // 发送湿度超限数据
+			  #if !DEBUG
         uint8_t humidity_data[] = {0xFD, 0x00, 0x0A, 0x01, 0x01, 0xCA, 0xAA, 0xB6, 0xC8, 0xB9, 0xFD, 0xB4, 0xF3};
         HAL_UART_Transmit(&huart3, humidity_data, sizeof(humidity_data), 1000);
+			  #endif
         humidity_voice_timer = 0;  // 重置冷却计时器
     }
 }

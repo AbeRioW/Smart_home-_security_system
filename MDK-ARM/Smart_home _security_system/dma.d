@@ -30,3 +30,4 @@ smart_home _security_system\dma.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx
 smart_home _security_system\dma.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 smart_home _security_system\dma.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smart_home _security_system\dma.o: ../App/flash.h
+smart_home _security_system\dma.o: ../App/delay.h

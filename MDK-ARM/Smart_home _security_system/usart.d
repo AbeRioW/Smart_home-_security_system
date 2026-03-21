@@ -30,3 +30,5 @@ smart_home _security_system\usart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1
 smart_home _security_system\usart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 smart_home _security_system\usart.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smart_home _security_system\usart.o: ../App/flash.h
+smart_home _security_system\usart.o: ../App/delay.h
+smart_home _security_system\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

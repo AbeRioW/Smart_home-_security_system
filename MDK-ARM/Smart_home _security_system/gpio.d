@@ -30,3 +30,4 @@ smart_home _security_system\gpio.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1x
 smart_home _security_system\gpio.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 smart_home _security_system\gpio.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 smart_home _security_system\gpio.o: ../App/flash.h
+smart_home _security_system\gpio.o: ../App/delay.h
